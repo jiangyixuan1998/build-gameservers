@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  palworld-server:
+    build: .
+    container_name: palworld-dedicated-server
+    image: jiangyixuan/palworldserver:latest
+    restart: always
+    network_mode: bridge
+    ports:
+      - target: 8211 # gamerserver port inside of the container
+        published: 8211 # gamerserver port on your server
+        protocol: udp
+        mode: host
+      - target: 25575 # rcon port inside of the container
+        published: 25575 # rcon port on yourserver
+        protocol: tcp
+        mode: host
+    volumes:
+      - $palworld:/home/steam/Steam/steamapps/common/PalServer/Pal/Saved
+    command: ["bash", "-c",  "/home/steam/Steam/steamapps/common/PalServer/PalServer.sh"]
